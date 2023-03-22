@@ -1,0 +1,26 @@
+# ninja log v5
+95	224	7011765694485263	code_week.exe	ae3b3e9b5c03c8d3
+1	95	7011765693279511	CMakeFiles/code_week.dir/main.c.obj	b12eeabd56d3b5a4
+19	163	7011745600586113	CMakeFiles/code_week.dir/testonly_linkedlist.c.obj	b4b6841ede00281d
+5	135	7011745600350920	CMakeFiles/code_week.dir/FileRW.c.obj	83579ebc854b4b8f
+1	96	7011763140264738	CMakeFiles/code_week.dir/interface.c.obj	20295e84346b08b2
+24	163	7011745600586113	CMakeFiles/code_week.dir/qualityassurance.c.obj	212208282df6c880
+2	145	7011745600426051	CMakeFiles/code_week.dir/gettime.c.obj	6a35be543b10db1
+15	157	7011745600516210	CMakeFiles/code_week.dir/listedit.c.obj	e1b16c8882165897
+12	144	7011768028040909	CMakeFiles/code_week.dir/listedit.c.obj	aedafea95223d529
+8	146	7011768028040909	CMakeFiles/code_week.dir/FileRW.c.obj	5c309da23836f69
+5	155	7011768028150950	CMakeFiles/code_week.dir/gettime.c.obj	e1e5eef3fce8bedf
+1	156	7011768028150950	CMakeFiles/code_week.dir/main.c.obj	d2cb7affb0b90f8e
+27	163	7011768028220974	CMakeFiles/code_week.dir/qualityassurance.c.obj	518f344a49b61138
+19	163	7011768028220974	CMakeFiles/code_week.dir/interface.c.obj	fa48ee77263b41c1
+32	172	7011768028300931	CMakeFiles/code_week.dir/testonly_linkedlist.c.obj	dfa31079cfcb7c6b
+172	329	7011768029825397	code_week.exe	8068eb1bb1880f9a
+1	145	7011768490184278	code_week.exe	8068eb1bb1880f9a
+2	101	7011770808796569	CMakeFiles/code_week.dir/interface.c.obj	fa48ee77263b41c1
+102	237	7011770810053600	code_week.exe	8068eb1bb1880f9a
+5	102	7011775913814377	CMakeFiles/code_week.dir/listedit.c.obj	aedafea95223d529
+1	106	7011775913854362	CMakeFiles/code_week.dir/main.c.obj	d2cb7affb0b90f8e
+8	113	7011775913924375	CMakeFiles/code_week.dir/interface.c.obj	fa48ee77263b41c1
+113	254	7011775915216296	code_week.exe	8068eb1bb1880f9a
+1	289	7012037471321650	CMakeFiles/code_week.dir/interface.c.obj	fa48ee77263b41c1
+290	471	7012037473032028	code_week.exe	8068eb1bb1880f9a

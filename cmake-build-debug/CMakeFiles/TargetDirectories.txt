@@ -1,0 +1,3 @@
+D:/Workspace/B22100429/code_week/cmake-build-debug/CMakeFiles/code_week.dir
+D:/Workspace/B22100429/code_week/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Workspace/B22100429/code_week/cmake-build-debug/CMakeFiles/rebuild_cache.dir
