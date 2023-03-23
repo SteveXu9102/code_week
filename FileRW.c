@@ -10,9 +10,9 @@
 
 int fileRead(unit *head) {     // 读取存档并加载进链表
     unit *single = (unit *) malloc(sizeof(unit));  // 用于中转单项数据
-    FILE *fp = fopen("stock_info.bin", "rb+");
+    FILE *fp = fopen("stock_info.sav", "r+");
 
-    if (fp == NULL) fp = fopen("stock_info.bin", "wb+");    // 判定读写权限是否正常
+    if (fp == NULL) fp = fopen("stock_info.sav", "w+");    // 判定读写权限是否正常
     if (fp == NULL) {
         printf("ERROR: CANNOT CREATE OR READ FILE. THE PROGRAM WILL EXIT.\n");
         exit(-1);
@@ -45,7 +45,7 @@ int fileRead(unit *head) {     // 读取存档并加载进链表
 
 void dataSave(unit *pointer) {
 
-    FILE *fp = fopen("stock_info.bin", "wb+");  // 生成新存档文件
+    FILE *fp = fopen("stock_info.sav", "w+");  // 生成新存档文件
 
     if (fp == NULL) {
         printf("\n错误：无法保存，文件操作失败。\n");
@@ -66,7 +66,29 @@ void dataSave(unit *pointer) {
     fclose(fp);
 }
 
-int csvTableGenerate(unit* head) {
+int saleStats(unit *target, int num, double unit_price) {
+    FILE *fp = fopen("stats.sav", "r");
+    struct tm *t_current = outDateTime();
+    if (fp == NULL) {
+        fp = fopen("stats.sav", "w+");
+        fprintf(fp, "药品名,销售量,单价_元,销售额_元,变化后销售量,变化后库存量,日期时间\n");
+        if (fp == NULL) {
+            fclose(fp);
+            return -1;
+        }
+    }
+    fclose(fp);
+    fp = fopen("stats.sav", "a+");
+
+    fprintf(fp, "%s,%d,%.2lf,%.2lf,%ld,%ld,%d-%d-%d %d:%d:%d\n", target->col.name, num, unit_price,
+            1.0 * num * unit_price, (target->col.sale_vol += num), (target->col.stock -= num),
+            1900 + t_current->tm_year, 1 + t_current->tm_mon, t_current->tm_mday,
+            t_current->tm_hour, t_current->tm_min, t_current->tm_sec);
+    fclose(fp);
+    return 0;
+}
+
+int csvTableGenerate(unit *head) {
     unit *pointer = head;
     FILE *fp = fopen("list.csv", "w+");
     if (fp == NULL) return -1;

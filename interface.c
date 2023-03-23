@@ -49,6 +49,9 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                 printf("请输入药品库存量：");
                 scanf("%ld", &mid->col.stock);
                 mid->col.sale_vol = 0;
+                if ((arg == saleStats(mid, 0, 0)) != 0) {
+                    printf("\n错误：无法将改动写入销售记录文件。\n");
+                }
                 replace(head, mid);
                 printf("\n添加成功！\n\n");
                 system("pause");  // 返回主菜单前等待输入
@@ -93,6 +96,9 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
             printf("请输入药品库存量：");
             scanf("%ld", &mid->col.stock);
             mid->col.sale_vol = 0;
+            if ((arg == saleStats(mid, 0, 0)) != 0) {
+                printf("\n错误：无法将改动写入销售记录文件。\n");
+            }
             system("cls");
             printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：1.新增药品条目\n");
             result = add(mid, head);  // 尝试添加节点
@@ -145,6 +151,12 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                 printf("请输入新药品信息：\n\n");
                 printf("药品名称：");
                 scanf("%s", mid->col.name);
+                if ((arg = strcmp(mid->col.name, result->col.name)) != 0) {
+                    result->col.stock = 0;
+                    if ((arg == saleStats(result, 0, 0)) != 0) {
+                        printf("\n错误：无法将改动写入销售记录文件。\n");
+                    }
+                }
                 printf("请输入分类编号，用空格分隔各部分：");
                 scanf("%d %d %d", &mid->col.type.main_type, &mid->col.type.mid_type, &mid->col.type.subtype);
                 printf("该药品是否为OTC药品？是请输入1，否则输入0：");
@@ -152,9 +164,12 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                 printf("请输入药品生产日期（以八位数字表示）：");
                 scanf("%ld", &mid->col.man_date);
                 chkSingDate(mid);
-                printf("请输入药品销售量和库存量，用空格分隔开：");
+                printf("请输入药品库存量：");
                 scanf("%ld", &mid->col.stock);
                 replace(result, mid);
+                if ((arg == saleStats(mid, 0, 0)) != 0) {
+                    printf("\n错误：无法将改动写入销售记录文件。\n");
+                }
             } else printf("错误：未找到条目。\n");   // 未查找到待修改条目
             system("pause");
             system("cls");
@@ -169,8 +184,19 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
             scanf("%s", name);
             system("cls");
             printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：4.删除药品条目\n");
-            if ((arg = del(name, head)) != -1) {  // 尝试删除条目
-                printf("删除操作成功完成。\n");
+            if ((result = findByName(name, head)) != NULL) {  // 查找到待修改条目，进行修改
+                chkSingDate(result);
+                printf("\n当前条目信息：\n");
+                stdprn(result);
+                result->col.stock = 0;
+                if ((arg == saleStats(result, 0, 0)) != 0) {
+                    printf("\n错误：无法将改动写入销售记录文件。\n");
+                }
+                if ((arg = del(name, head)) != -1) {  // 尝试删除条目
+                    printf("删除操作成功完成。\n");
+                } else {  // 删除失败
+                    printf("错误：操作失败。\n");
+                }
             } else {  // 删除失败
                 printf("错误：未找到条目。\n");
             }
@@ -194,6 +220,10 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
             printf("当前日期：");
             timePrn();
             printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：6.生成销售报表\n");
+
+            printf("\n选择一项进行生成:\n1.生成单条目销售情况\n2.生成所有条目销售情况\n\n");
+            printf("\n输入相应序号并按下回车键：");
+            scanf("%d", &arg);
 
             printf("\n报表生成中...\n");
 
@@ -222,7 +252,7 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                         printf("\n[警告] 该药品过期。禁止售卖。\n");
                         goto ret_prev;
                     case 0:
-                        printf("\n[注意] 该药品临期。请注意提示消费者。\n");
+                        printf("\n[注意] 该药品临期。\n");
                         break;
                     default:
                         break;
@@ -252,9 +282,9 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                     printf("\n总价：%.2lf 元，支付是否成功？(是：1，否：其他任何数字)", 1.0 * num * unit_price);  // 计算价格
                     scanf("%d", &arg);
                     if (arg == 1) {  //收费成功则扣除库存量增加销售量
-                        result->col.stock -= num;
-                        result->col.sale_vol += num;
-                        printf("\n库存状态更新。\n");
+                        if ((arg == saleStats(result, num, unit_price)) == 0) {
+                            printf("\n库存状态更新。\n");
+                        } else printf("\n错误：无法将改动写入文件。\n");
                     } else printf("\n库存状态无更新。\n");
                     goto ret_prev;
                 }
