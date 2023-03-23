@@ -8,7 +8,8 @@
 #include "datastore.h"
 // 程序内通用数据结构
 
-extern unit *findByName(char *, unit *);
+extern unit *findByName(char name[256], unit *);
+
 // 查找函数
 extern unit *add(unit *, unit *);
 // 添加函数

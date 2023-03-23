@@ -1,6 +1,6 @@
 //
 // Created by Steve_Hsu on 2023/3/21.
-// ´ËÎÄ¼şÄÚº¯Êı½ö×÷Îª¶ÔÁ´±íÊı¾İÍêÕû¶È½øĞĞ²âÊÔÖ®ÓÃ
+// æ­¤æ–‡ä»¶å†…å‡½æ•°ä»…ä½œä¸ºå¯¹é“¾è¡¨æ•°æ®å®Œæ•´åº¦è¿›è¡Œæµ‹è¯•ä¹‹ç”¨
 //
 
 #include <stdlib.h>
@@ -8,8 +8,8 @@
 #include <strings.h>
 #include "datastore.h"
 
-void makeLinkedList(unit* head) {       // ÓÃÓÚ¶ÁĞ´²âÊÔµÄĞ¡ĞÍÁ´±í
-    strcpy(head->col.name, "Í·æß");
+void makeLinkedList(unit *head) {       // ç”¨äºè¯»å†™æµ‹è¯•çš„å°å‹é“¾è¡¨
+    strcpy(head->col.name, "å¤´å­¢");
     head->col.type.main_type = 1;
     head->col.type.mid_type = 1;
     head->col.type.subtype = 1;
@@ -19,7 +19,7 @@ void makeLinkedList(unit* head) {       // ÓÃÓÚ¶ÁĞ´²âÊÔµÄĞ¡ĞÍÁ´±í
     head->col.sale_vol = 13;
     head->next = malloc(sizeof(unit));
     head = head->next;
-    strcpy(head->col.name, "°¢ÄªÎ÷ÁÖ");
+    strcpy(head->col.name, "é˜¿è«è¥¿æ—");
     head->col.type.main_type = 1;
     head->col.type.mid_type = 2;
     head->col.type.subtype = 1;
@@ -29,7 +29,7 @@ void makeLinkedList(unit* head) {       // ÓÃÓÚ¶ÁĞ´²âÊÔµÄĞ¡ĞÍÁ´±í
     head->col.sale_vol = 6;
     head->next = malloc(sizeof(unit));
     head = head->next;
-    strcpy(head->col.name, "¿ÈÌØÁé");
+    strcpy(head->col.name, "å’³ç‰¹çµ");
     head->col.type.main_type = 1;
     head->col.type.mid_type = 1;
     head->col.type.subtype = 3;
@@ -39,7 +39,7 @@ void makeLinkedList(unit* head) {       // ÓÃÓÚ¶ÁĞ´²âÊÔµÄĞ¡ĞÍÁ´±í
     head->col.sale_vol = 37;
     head->next = malloc(sizeof(unit));
     head = head->next;
-    strcpy(head->col.name, "èÁèË¸à");
+    strcpy(head->col.name, "æ‡æ·è†");
     head->col.type.main_type = 2;
     head->col.type.mid_type = 4;
     head->col.type.subtype = 1;
@@ -50,10 +50,12 @@ void makeLinkedList(unit* head) {       // ÓÃÓÚ¶ÁĞ´²âÊÔµÄĞ¡ĞÍÁ´±í
     head->next = NULL;
 }
 
-void listAll(unit* h0) {  // ÓÃÓÚÊı¾İÍêÕûĞÔ²âÊÔµÄº¯Êı£¬Êä³öËùÓĞÁ´±íµÄÏî
+void listAll(unit *h0) {  // ç”¨äºæ•°æ®å®Œæ•´æ€§æµ‹è¯•çš„å‡½æ•°ï¼Œè¾“å‡ºæ‰€æœ‰é“¾è¡¨çš„é¡¹
     do {
-        printf("%s\t%d\t%d\t%d\t%d\t%ld\t%ld\t%ld\n", h0->col.name, h0->col.type.main_type, h0->col.type.mid_type, h0->col.type.subtype, h0->col.type.isotc, h0->col.man_date, h0->col.stock, h0->col.sale_vol);
+        printf("%s\t%d\t%d\t%d\t%d\t%ld\t%ld\t%ld\n", h0->col.name, h0->col.type.main_type, h0->col.type.mid_type,
+               h0->col.type.subtype, h0->col.type.isotc, h0->col.man_date, h0->col.stock, h0->col.sale_vol);
         h0 = h0->next;
     } while (h0->next != NULL);
-    printf("%s\t%d\t%d\t%d\t%d\t%ld\t%ld\t%ld\n", h0->col.name, h0->col.type.main_type, h0->col.type.mid_type, h0->col.type.subtype, h0->col.type.isotc, h0->col.man_date, h0->col.stock, h0->col.sale_vol);
+    printf("%s\t%d\t%d\t%d\t%d\t%ld\t%ld\t%ld\n", h0->col.name, h0->col.type.main_type, h0->col.type.mid_type,
+           h0->col.type.subtype, h0->col.type.isotc, h0->col.man_date, h0->col.stock, h0->col.sale_vol);
 }

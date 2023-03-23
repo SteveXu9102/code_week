@@ -5,9 +5,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+//#include <locale.h>
 #include "list_func.h"
 
-//#define DEBUG
+// #define DEBUG
 // 程序调试标记
 #define RDY
 // 程序完成标记
@@ -32,6 +33,7 @@ int main() {
     unit *ff;  // 用于内存释放
 
     //system("chcp 65001");
+    //setlocale(LC_ALL, "chinese-simplified_pr-china.65001");
 
     printf("读取数据中...\n");
 
@@ -61,5 +63,6 @@ int main() {
         head = head->next;
         free(ff);
     }
+    system("pause");
     return 0;
 }

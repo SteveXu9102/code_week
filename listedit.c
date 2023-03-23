@@ -17,13 +17,15 @@ void replace(unit *dest, unit *new) {      // ¶ÔÓ¦Êý¾ÝÌæ»»
     dest->col.man_date = new->col.man_date;
 }
 
-unit *findByName(char *name, unit *head) {     // Á´±í²éÕÒº¯Êý£¬²ÎÊýÎªÐèÒª²éÕÒµÄÌõÄ¿Ãû³Æ×Ö·û´®ºÍÁ´±íÊ×²¿Ö¸Õë
+unit *findByName(char name[256], unit *head) {     // Á´±í²éÕÒº¯Êý£¬²ÎÊýÎªÐèÒª²éÕÒµÄÌõÄ¿Ãû³Æ×Ö·û´®ºÍÁ´±íÊ×²¿Ö¸Õë
     unit *mid = head;  // ±ÜÃâÖ±½ÓÐÞ¸ÄÍ·Ö¸Õë
-    if (mid->next != NULL && strcmp(mid->col.name, name) == 0) {  //¶ÔÊ×²¿½ÚµãµÄ²éÕÒ±È½Ï
+    char nm[256];
+    strcpy(nm, name);
+    if (strcmp(mid->col.name, nm) == 0) {  //¶ÔÊ×²¿½ÚµãµÄ²éÕÒ±È½Ï
         return mid;    // ²éÕÒµ½ºó·µ»ØµØÖ·
     }
     while (mid->next != NULL) {    // ¶ÔºóÐø½ÚµãµÄ²éÕÒ±È½Ï
-        if (strcmp(mid->next->col.name, name) == 0) {  // ±È½ÏÃû³Æ
+        if (strcmp(mid->next->col.name, nm) == 0) {  // ±È½ÏÃû³Æ
             return mid->next;   // ²éÕÒµ½ºó·µ»ØµØÖ·
         }
         mid = mid->next;
@@ -57,9 +59,16 @@ int del(char *name, unit *L) {  // É¾³ý½Úµã£¬²ÎÊýÎª´ýÉ¾³ýµÄ½ÚµãÃû×Ö·û´®ºÍÁ´±íÊ×²
     unit *f = L, *m; // f: ±ÜÃâÖ±½ÓÐÞ¸ÄLÖ¸Ïò£¬m: ´æ´¢µØÖ·µÄÖÐ¼äÁ¿
     m = findByName(name, f);  // ËÑË÷´ýÉ¾³ý½Úµã
     if (m == L) {   // ´ýÉ¾³ý½ÚµãÇ¡ÎªÊ×²¿
-        L = m->next;  // ÐÞ¸ÄÊ×²¿Ö¸Õë
-        free(m);  // ÊÍ·ÅÔ­Ê×²¿µÄÄÚ´æ
-        return 0;
+        if (m->next != NULL) {
+            L = m->next;  // ÐÞ¸ÄÊ×²¿Ö¸Õë
+            free(m);  // ÊÍ·ÅÔ­Ê×²¿µÄÄÚ´æ
+            return 0;
+        } else {
+            free(m);
+            L = (unit *) malloc(sizeof(unit));
+            strcpy(L->col.name, "NULL");
+            L->next = NULL;
+        }
     } else if (m != NULL) {
         unit *n = m->next;  // »ñÈ¡´ýÉ¾³ý½ÚµãµÄnextÖ¸Õë¶ÔÓ¦µØÖ·
         while (f->next != NULL) {
