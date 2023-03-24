@@ -211,6 +211,21 @@ unit *menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                 chkSingDate(result);
                 printf("\n当前条目信息：\n");
                 stdprn(result);
+                choose:
+                printf("\n是否删除？（是：1  否：0）[ ]\b\b");
+                scanf("%d", &arg);
+                switch (arg) {
+                    case 0:
+                        printf("\n取消。\n");
+                        goto ret_prev;
+                    case 1:
+                        printf("删除中...");
+                        goto delete;
+                    default:
+                        printf("错误：无效的序号。\n\n");  // 误输入防范
+                        goto choose;
+                }
+                delete:
                 result->col.stock = 0;
                 if ((arg = saleStats(result, 0, 0)) != 0) { // 记录库存变动
                     printf("\n错误：无法将改动写入销售记录文件。\n");
