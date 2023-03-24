@@ -55,28 +55,28 @@ unit *add(unit *L, unit *head) {  // Ìí¼Ó½Úµã£¬²ÎÊýÎª´ýÌí¼ÓµÄ½ÚµãÊý¾ÝºÍÁ´±íÊ×²¿Ö
 }
 
 
-int del(char *name, unit *L) {  // É¾³ý½Úµã£¬²ÎÊýÎª´ýÉ¾³ýµÄ½ÚµãÃû×Ö·û´®ºÍÁ´±íÊ×²¿Ö¸Õë£¬·µ»ØÖµ±íÊ¾²Ù×÷ÊÇ·ñ³É¹¦
-    unit *f = L, *m; // f: ±ÜÃâÖ±½ÓÐÞ¸ÄLÖ¸Ïò£¬m: ´æ´¢µØÖ·µÄÖÐ¼äÁ¿
-    m = findByName(name, f);  // ËÑË÷´ýÉ¾³ý½Úµã
+unit *del(char *name, unit *L) {  // É¾³ý½Úµã£¬²ÎÊýÎª´ýÉ¾³ýµÄ½ÚµãÃû×Ö·û´®ºÍÁ´±íÊ×²¿Ö¸Õë£¬·µ»ØÖµ±íÊ¾²Ù×÷ÊÇ·ñ³É¹¦
+    unit *head = L, *m; // m: ´æ´¢µØÖ·µÄÖÐ¼äÁ¿
+    m = findByName(name, L);  // ËÑË÷´ýÉ¾³ý½Úµã
     if (m == L) {   // ´ýÉ¾³ý½ÚµãÇ¡ÎªÊ×²¿
         if (m->next != NULL) {
-            L = m->next;  // ÐÞ¸ÄÊ×²¿Ö¸Õë
+            L = m->next;
             free(m);  // ÊÍ·ÅÔ­Ê×²¿µÄÄÚ´æ
-            return 0;
         } else {
             free(m);
             L = (unit *) malloc(sizeof(unit));
             strcpy(L->col.name, "NULL");
             L->next = NULL;
         }
+        return L;
     } else if (m != NULL) {
         unit *n = m->next;  // »ñÈ¡´ýÉ¾³ý½ÚµãµÄnextÖ¸Õë¶ÔÓ¦µØÖ·
-        while (f->next != NULL) {
-            if (f->next == m) break;  // Ê¹fÖ¸Ïò´ýÉ¾³ý½ÚµãµÄÇ°Ò»½Úµã
-            f = f->next;
+        while (L->next != NULL) {
+            if (L->next == m) break;  // Ê¹fÖ¸Ïò´ýÉ¾³ý½ÚµãµÄÇ°Ò»½Úµã
+            L = L->next;
         }
         free(m);  // ÊÍ·Å½ÚµãÄÚ´æ
-        f->next = n;  // Á´½Ó¸Ã½ÚµãÇ°ºóµÄ½Úµã
-        return 0;  // ²Ù×÷³É¹¦
-    } else return -1;  // ²Ù×÷Ê§°Ü
+        L->next = n;  // Á´½Ó¸Ã½ÚµãÇ°ºóµÄ½Úµã
+        return head;  // ²Ù×÷³É¹¦
+    } else return NULL;
 }

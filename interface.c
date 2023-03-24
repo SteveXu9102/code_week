@@ -14,7 +14,7 @@ void stdprn(unit *ptr) {
            (ptr->col.type.isotc == 1 ? "是" : "否"), ptr->col.man_date, ptr->col.stock, ptr->col.sale_vol);
 }
 
-void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
+unit *menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
     int arg;  // 获取操作序号用
     int qacond; // 检测是否有药品将要过期的标识
     char name[256]; // 获取待操作条目名称用
@@ -23,7 +23,7 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
 
     init:      // 此标签用于返回主菜单
     strnset(name, '\0', 256);
-    free(mid);
+    mid = NULL;
     mid = (unit *) malloc(sizeof(unit));
     mid->next = NULL;
     result = NULL;
@@ -33,7 +33,7 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
     if ((!strcmp(head->col.name, "NULL")) && head->next == NULL) {
         printf("********** 药房销售系统 Ver.1.0 **********\n\n警告：无条目记录。选择操作：\n\n");
         printf("1.新增药品条目\n2.生成销售报表\n3.取消保存并退出\n");
-        printf("\n输入相应序号并按下回车键：");
+        printf("\n输入相应序号并按下回车键：[ ]\b\b");
         scanf("%d", &arg);
         switch (arg) {
             case 1:
@@ -54,6 +54,7 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                 }
                 replace(head, mid);
                 printf("\n添加成功！\n\n");
+                free(mid);
                 system("pause");  // 返回主菜单前等待输入
                 system("cls");  // 清屏
                 break;
@@ -73,7 +74,7 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
     printf("1.新增药品条目\n2.查询药品条目\n3.修改药品条目\n4.删除药品条目\n5.显示临期药品\n6.生成销售报表\n7.销售药品\n8.保存并退出\n9.取消保存并退出\n");
     if ((qacond = showQaCond(head, 0)) == -1)
         printf("\n[注意] 发现有库存药物即将或已经过期。\n[注意] 选择序号5以查看详情。\n");
-    printf("\n输入相应序号并按下回车键：");
+    printf("\n输入相应序号并按下回车键：[ ]\b\b");
     scanf("%d", &arg); // 获取操作序号
 
     //子菜单
@@ -83,14 +84,14 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
             system("cls");
             printf("当前日期：");
             timePrn();
-            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：1.新增药品条目\n");
+            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：1.新增药品条目\n\n");
             printf("请输入药品名：");
             scanf("%s", mid->col.name);
-            printf("请输入分类编号，用空格分隔各部分：");
+            printf("请输入分类编号，用空格分隔各部分：[        ]\b\b\b\b\b\b\b\b\b");
             scanf("%d %d %d", &mid->col.type.main_type, &mid->col.type.mid_type, &mid->col.type.subtype);
-            printf("该药品是否为OTC药品？是请输入1，否则输入0：");
+            printf("该药品是否为OTC药品？是请输入1，否则输入0：[ ]\b\b");
             scanf("%d", &mid->col.type.isotc);
-            printf("请输入药品生产日期（以八位数字表示）：");
+            printf("请输入药品生产日期（以八位数字表示）：[        ]\b\b\b\b\b\b\b\b");
             scanf("%ld", &mid->col.man_date);
             chkSingDate(mid);
             printf("请输入药品库存量：");
@@ -100,7 +101,7 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                 printf("\n错误：无法将改动写入销售记录文件。\n");
             }
             system("cls");
-            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：1.新增药品条目\n");
+            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：1.新增药品条目\n\n");
             result = add(mid, head);  // 尝试添加节点
             if (result != NULL) {  // 失败
                 printf("错误：该条目已存在。详细信息为：\n");
@@ -108,6 +109,7 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
             } else {  // 成功
                 printf("\n添加成功！\n\n");
             }
+            free(mid);
             system("pause");  // 返回主菜单前等待输入
             system("cls");  // 清屏
             goto init;  // 返回主菜单
@@ -116,12 +118,12 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
             system("cls");
             printf("当前日期：");
             timePrn();
-            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：2.查询药品条目\n");
+            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：2.查询药品条目\n\n");
             printf("请输入需要搜索的药品名：");
             getchar();
             gets(name);
             system("cls");
-            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：2.查询药品条目\n");
+            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：2.查询药品条目\n\n");
             if ((result = findByName(name, head)) != NULL) {  // 尝试查找
                 printf("已找到条目。\n");
                 chkSingDate(result);
@@ -137,13 +139,13 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
             system("cls");
             printf("当前日期：");
             timePrn();
-            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：3.修改药品条目\n");
+            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：3.修改药品条目\n\n");
             printf("请输入要修改条目的药品名：");
             scanf("%s", name);
             system("cls");
             printf("当前日期：");
             timePrn();
-            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：3.修改药品条目\n");
+            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：3.修改药品条目\n\n");
             if ((result = findByName(name, head)) != NULL) {  // 查找到待修改条目，进行修改
                 chkSingDate(result);
                 printf("\n当前条目信息：\n");
@@ -157,11 +159,11 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                         printf("\n错误：无法将改动写入销售记录文件。\n");
                     }
                 }
-                printf("请输入分类编号，用空格分隔各部分：");
+                printf("请输入分类编号，用空格分隔各部分：[        ]\b\b\b\b\b\b\b\b\b");
                 scanf("%d %d %d", &mid->col.type.main_type, &mid->col.type.mid_type, &mid->col.type.subtype);
-                printf("该药品是否为OTC药品？是请输入1，否则输入0：");
+                printf("该药品是否为OTC药品？是请输入1，否则输入0：[ ]\b\b");
                 scanf("%d", &mid->col.type.isotc);
-                printf("请输入药品生产日期（以八位数字表示）：");
+                printf("请输入药品生产日期（以八位数字表示）：[        ]\b\b\b\b\b\b\b\b\b");
                 scanf("%ld", &mid->col.man_date);
                 chkSingDate(mid);
                 printf("请输入药品库存量：");
@@ -171,6 +173,7 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                     printf("\n错误：无法将改动写入销售记录文件。\n");
                 }
             } else printf("错误：未找到条目。\n");   // 未查找到待修改条目
+            free(mid);
             system("pause");
             system("cls");
             goto init;
@@ -179,11 +182,11 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
             system("cls");
             printf("当前日期：");
             timePrn();
-            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：4.删除药品条目\n");
+            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：4.删除药品条目\n\n");
             printf("请输入需要删除的条目（药品名）：");
             scanf("%s", name);
             system("cls");
-            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：4.删除药品条目\n");
+            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：4.删除药品条目\n\n");
             if ((result = findByName(name, head)) != NULL) {  // 查找到待修改条目，进行修改
                 chkSingDate(result);
                 printf("\n当前条目信息：\n");
@@ -192,10 +195,10 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                 if ((arg == saleStats(result, 0, 0)) != 0) {
                     printf("\n错误：无法将改动写入销售记录文件。\n");
                 }
-                if ((arg = del(name, head)) != -1) {  // 尝试删除条目
+                free(mid);
+                if ((mid = del(name, head)) != NULL) {  // 尝试删除条目
+                    head = mid;
                     printf("删除操作成功完成。\n");
-                } else {  // 删除失败
-                    printf("错误：操作失败。\n");
                 }
             } else {  // 删除失败
                 printf("错误：未找到条目。\n");
@@ -221,15 +224,34 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
             timePrn();
             printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：6.生成销售报表\n");
 
-            printf("\n选择一项进行生成:\n1.生成单条目销售情况\n2.生成所有条目销售情况\n\n");
-            printf("\n输入相应序号并按下回车键：");
+
+            printf("\n选择一项进行生成:\n1.生成单品类销售记录\n2.生成库存统计\n\n");
+            printf("\n输入相应序号并按下回车键：[ ]\b\b");
             scanf("%d", &arg);
 
-            printf("\n报表生成中...\n");
+            system("cls");
+            printf("当前日期：");
+            timePrn();
+            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：6.生成销售报表\n");
 
-            if ((arg = csvTableGenerate(head)) == 0) {  // 生成表格，判断生成是否成功
-                printf("\n完成。报表现存储至程序同名目录下，文件名为：list.csv\n");
-            } else printf("\n错误：请检查程序权限和磁盘剩余空间。\n");
+            switch (arg) {
+                case 1:
+                    printf("\n请输入需要生成表格的药品名：");
+                    scanf("%s", name);
+                    if ((arg = csvSingGen(name)) == 0) {
+                        printf("\n完成。报表现存储至程序同名目录下，文件名为：stats_%s.csv\n", name);
+                    } else printf("\n错误：无此条目。\n");
+                    break;
+                case 2:
+                    printf("\n报表生成中...\n");
+                    if ((arg = csvAllGen(head)) == 0) {  // 生成表格，判断生成是否成功
+                        printf("\n完成。报表现存储至程序同名目录下，文件名为：stock.csv\n");
+                    } else printf("\n错误：请检查程序权限和磁盘剩余空间。\n");
+                    break;
+                default:
+                    printf("\n序号输入错误，返回主菜单。\n");
+                    break;
+            }
 
             system("pause");
             system("cls");
@@ -238,13 +260,14 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
             system("cls");
             printf("当前日期：");
             timePrn();
-            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：7.销售药品\n");
+            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：7.销售药品\n\n");
             printf("请输入需要销售的药品名：");
             scanf("%s", name);
             system("cls");
-            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：7.销售药品\n");
+            printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：7.销售药品\n\n");
             if ((result = findByName(name, head)) != NULL) {  // 尝试查找
                 printf("已找到条目。\n");
+                numin:
                 chkSingDate(result);  // 刷新质量情况
                 stdprn(result);
                 switch (result->col.qa) {  // 判断药品是否临期或过期
@@ -257,14 +280,17 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                     default:
                         break;
                 }
+                if (result->col.stock == 0) {
+                    printf("\n[警告] 该药品无库存。返回主菜单。\n");
+                    goto ret_prev;
+                }
                 int num; // 数量
                 double unit_price;  // 单价
-                numin:
                 printf("\n请输入药品数量：");
                 scanf("%d", &num);
                 if (num > result->col.stock || num <= 0) {  // 检查库存数量是否充足
                     system("cls");
-                    printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：7.销售药品\n");
+                    printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：7.销售药品\n\n");
                     printf("错误：库存数量不足或数量输入错误。请选择操作：\n1.重新输入数量\n2.返回主菜单\n选择一项：");
                     scanf("%d", &arg);
                     if (arg == 1) {
@@ -273,13 +299,13 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                         goto numin;
                     } else if (arg == 2) goto ret_prev;
                     else {  // 防止序号误输入
-                        printf("\n序号输入错误，返回主菜单。\n");
+                        printf("\n序号输入错误。返回主菜单。\n");
                         goto ret_prev;
                     }
                 } else {
                     printf("\n请输入单价（元）：");
                     scanf("%lf", &unit_price);
-                    printf("\n总价：%.2lf 元，支付是否成功？(是：1，否：其他任何数字)", 1.0 * num * unit_price);  // 计算价格
+                    printf("\n总价：%.2lf 元，支付是否成功？(是：1，否：0) [ ]\b\b", 1.0 * num * unit_price);  // 计算价格
                     scanf("%d", &arg);
                     if (arg == 1) {  //收费成功则扣除库存量增加销售量
                         if ((arg == saleStats(result, num, unit_price)) == 0) {
@@ -314,4 +340,5 @@ void menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
             goto init;
     }
     free(mid);
+    return head;
 }

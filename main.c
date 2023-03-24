@@ -26,7 +26,7 @@ extern void makeLinkedList(unit *);  // 生成测试用链表
 extern void listAll(unit *);  // 测试时列出链表所有节点
 #endif
 
-extern void menu(unit *);  // 菜单
+extern unit *menu(unit *);  // 菜单
 
 int main() {
     unit *head = malloc(sizeof(unit));  // 生成首个节点
@@ -56,7 +56,7 @@ int main() {
     // listAll(head);
 #endif
 
-    menu(head);  // 加载菜单并实现功能
+    head = menu(head);  // 加载菜单并实现功能
 
     while (head != NULL) {   // 链表内存释放
         ff = head;
