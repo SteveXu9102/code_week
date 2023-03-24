@@ -34,7 +34,7 @@ void timePrn() {
         case 6:
             weekday = "ÖÜÁù";
             break;
-        case 7:
+        case 0:
             weekday = "ÖÜÈÕ";
             break;
     }
