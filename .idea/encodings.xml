@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/FileName(1).c" charset="GBK" />
     <file url="file://$PROJECT_DIR$/FileRW.c" charset="GBK" />
     <file url="file://$PROJECT_DIR$/cmake-build-debug/list.csv" charset="GBK" />
     <file url="file://$PROJECT_DIR$/cmake-build-debug/stats.csv" charset="GBK" />
     <file url="file://$PROJECT_DIR$/cmake-build-debug/stats.sav" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/cmake-build-debug/stats_多潘立酮片.csv" charset="GBK" />
     <file url="file://$PROJECT_DIR$/cmake-build-debug/stats_阿莫西林胶囊.csv" charset="GBK" />
     <file url="file://$PROJECT_DIR$/cmake-build-debug/stock.csv" charset="GBK" />
     <file url="file://$PROJECT_DIR$/cmake-build-debug/stock_info.bin" charset="GBK" />
