@@ -1,6 +1,6 @@
 # 南京邮电大学程序设计周项目 - 药房销售系统
 
-# A project ofNanjing University of Posts and Telecommunications Coding Week - Pharmacy Sales System
+# A project of Nanjing University of Posts and Telecommunications Coding Week - Pharmacy Sales System
 
 注意：本项目遵循MIT协议开源。
 
