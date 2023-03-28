@@ -3,9 +3,6 @@
 // Ö÷º¯Êý
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-//#include <locale.h>
 #include "list_func.h"
 
 // #define DEBUG

@@ -3,9 +3,6 @@
 // 文件读写函数
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <strings.h>
 #include "list_func.h"
 
 int fileRead(unit *head) {     // 读取存档并加载进链表，返回值表示读取状态

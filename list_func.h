@@ -4,6 +4,10 @@
 
 #ifndef CODE_WEEK_LIST_FUNC_H
 #define CODE_WEEK_LIST_FUNC_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include <time.h>
 #include "datastore.h"
 // 程序内通用数据结构

@@ -1,5 +1,3 @@
-#include <stdlib.h>
-#include <string.h>
 #include"list_func.h"
 
 // 数据操作函数

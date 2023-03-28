@@ -3,9 +3,6 @@
 // 简易交互界面
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <strings.h>
 #include "list_func.h"
 
 void stdprn(unit *ptr) {  // 单条目所有信息打印
@@ -14,7 +11,7 @@ void stdprn(unit *ptr) {  // 单条目所有信息打印
            (ptr->col.type.isotc == 1 ? "是" : "否"), ptr->col.man_date, ptr->col.stock, ptr->col.sale_vol);
 }
 
-unit *menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
+unit *menu(unit *head) {  // 菜单及链功能实现，参数为表首地址
     int arg;  // 获取操作序号、存储参数等
     char name[256]; // 获取待操作条目名称用
 
@@ -32,7 +29,7 @@ unit *menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
 
     if ((!strcmp(head->col.name, "NULL")) && head->next == NULL) {  // 无条目时强制限制功能
         printf("********** 药房销售系统 Ver.1.0 **********\n\n警告：无条目记录。选择操作：\n\n");
-        printf("1.新增药品条目\n2.生成销售报表\n3.取消保存并退出\n");
+        printf("1.新增药品条目\n2.生成销售报表\n3.保存并退出\n");
         printf("\n输入相应序号并按下回车键：");
         scanf("%d", &arg);
         switch (arg) {
@@ -63,6 +60,8 @@ unit *menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                 replace(head, mid);  // 向链表写入数据
                 printf("\n添加成功！\n\n");
                 free(mid);  // 释放中间结构体的内存
+                dataSave(head);
+                printf("\n保存到文件...\n");
                 system("pause");  // 返回主菜单前等待输入
                 system("cls");  // 清屏
                 break;
@@ -79,7 +78,7 @@ unit *menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
 
     }
     printf("********** 药房销售系统 Ver.1.0 **********\n\n欢迎！请选择以下操作中的一个：\n\n");
-    printf("1.新增药品条目\n2.查询药品条目\n3.修改药品条目\n4.删除药品条目\n5.显示临期药品\n6.生成销售报表\n7.销售药品\n8.保存并退出\n9.取消保存并退出\n");
+    printf("1.新增药品条目\n2.查询药品条目\n3.修改药品条目\n4.删除药品条目\n5.显示临期药品\n6.生成销售报表\n7.销售药品\n8.保存并退出\n");
     if ((arg = showQaCond(head, 0)) == -1)  // 检查是否存在临期药品
         printf("\n[注意] 发现有库存药物即将或已经过期。\n[注意] 选择序号5以查看详情。\n");
     printf("\n输入相应序号并按下回车键：");
@@ -121,6 +120,8 @@ unit *menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                 stdprn(result);
             } else {  // 成功
                 printf("\n添加成功！\n\n");
+                dataSave(head);
+                printf("\n保存到文件...\n");
             }
             free(mid);
             system("pause");  // 返回主菜单前等待输入
@@ -173,7 +174,7 @@ unit *menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                     if ((arg = saleStats(mid, 0, 0)) != 0) {  // 记录库存变化
                         printf("\n错误：无法将改动写入销售记录文件。\n");
                     }
-                }
+                } else mid->col.sale_vol = result->col.sale_vol;
                 printf("请输入三段分类编号（1-5，1-25，1-8），用空格分隔各段：");
                 scanf("%d %d %d", &mid->col.type.main_type, &mid->col.type.mid_type, &mid->col.type.subtype);
                 if (chkType(mid->col.type.main_type, mid->col.type.mid_type, mid->col.type.subtype)) goto inerr;
@@ -188,6 +189,8 @@ unit *menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                 scanf("%ld", &mid->col.stock);
                 if (mid->col.stock < 0) goto inerr;
                 replace(result, mid);  // 向链表写入信息
+                dataSave(head);
+                printf("\n保存到文件...\n");
                 if ((arg = saleStats(result, 0, 0)) != 0) {  // 写入库存信息
                     printf("\n错误：无法将改动写入销售记录文件。\n");
                 }
@@ -233,6 +236,8 @@ unit *menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                 free(mid);
                 if ((mid = del(name, head)) != NULL) {  // 尝试删除条目
                     head = mid; // 记录链表新头地址
+                    dataSave(head);
+                    printf("\n保存到文件...\n");
                     printf("删除操作成功完成。\n");
                 }
             } else {  // 删除失败
@@ -345,6 +350,8 @@ unit *menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
                     scanf("%d", &arg);
                     if (arg == 1) {  //收费成功则扣除库存量增加销售量
                         if ((arg = saleStats(result, num, unit_price)) == 0) { // 记录销售情况
+                            dataSave(head);
+                            printf("\n保存到文件...\n");
                             printf("\n库存状态更新。\n");
                         } else printf("\n错误：无法将改动写入文件。\n");
                     } else printf("\n库存状态无更新。\n");
@@ -363,10 +370,6 @@ unit *menu(unit *head) {  // 菜单及功能实现，参数为链表首地址
         case 8:
             printf("保存并退出中...\n");
             dataSave(head);     // 保存数据并对上次数据进行备份
-            break;
-
-        case 9:
-            printf("改动未保存。退出中...\n");
             break;
 
         default:  // 防止误输入序号
