@@ -95,6 +95,8 @@ unit *menu(unit *head) {  // 菜单及链功能实现，参数为表首地址
             printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：1.新增药品条目\n\n");
             printf("请输入药品名：");
             scanf("%s", mid->col.name);
+
+
             printf("请输入三段分类编号（1-5，1-25，1-8），用空格分隔各段：");
             scanf("%d %d %d", &mid->col.type.main_type, &mid->col.type.mid_type, &mid->col.type.subtype);
             if (chkType(mid->col.type.main_type, mid->col.type.mid_type, mid->col.type.subtype)) goto inerr;
@@ -109,9 +111,7 @@ unit *menu(unit *head) {  // 菜单及链功能实现，参数为表首地址
             scanf("%ld", &mid->col.stock);
             if (mid->col.stock < 0) goto inerr;
             mid->col.sale_vol = 0;
-            if ((arg = saleStats(mid, 0, 0)) != 0) {
-                printf("\n错误：无法将改动写入销售记录文件。\n");
-            }
+
             system("cls");
             printf("********** 药房销售系统 Ver.1.0 **********\n\n当前选项：1.新增药品条目\n\n");
             result = add(mid, head);  // 尝试添加节点
@@ -121,6 +121,9 @@ unit *menu(unit *head) {  // 菜单及链功能实现，参数为表首地址
             } else {  // 成功
                 printf("\n添加成功！\n\n");
                 dataSave(head);
+                if ((arg = saleStats(mid, 0, 0)) != 0) {
+                    printf("\n错误：无法将改动写入销售记录文件。\n");
+                }
                 printf("\n保存到文件...\n");
             }
             free(mid);
@@ -169,12 +172,6 @@ unit *menu(unit *head) {  // 菜单及链功能实现，参数为表首地址
                 printf("请输入新药品信息：\n\n");
                 printf("药品名称：");
                 scanf("%s", mid->col.name);
-                if ((arg = strcmp(mid->col.name, result->col.name)) != 0) {  // 新名称与旧名称不同
-                    result->col.stock = 0;  // 清空旧库存
-                    if ((arg = saleStats(mid, 0, 0)) != 0) {  // 记录库存变化
-                        printf("\n错误：无法将改动写入销售记录文件。\n");
-                    }
-                } else mid->col.sale_vol = result->col.sale_vol;
                 printf("请输入三段分类编号（1-5，1-25，1-8），用空格分隔各段：");
                 scanf("%d %d %d", &mid->col.type.main_type, &mid->col.type.mid_type, &mid->col.type.subtype);
                 if (chkType(mid->col.type.main_type, mid->col.type.mid_type, mid->col.type.subtype)) goto inerr;
@@ -188,6 +185,13 @@ unit *menu(unit *head) {  // 菜单及链功能实现，参数为表首地址
                 printf("请输入药品库存量：");
                 scanf("%ld", &mid->col.stock);
                 if (mid->col.stock < 0) goto inerr;
+
+                if ((arg = strcmp(mid->col.name, result->col.name)) != 0) {  // 新名称与旧名称不同
+                    result->col.stock = 0;  // 清空旧库存
+                    if ((arg = saleStats(mid, 0, 0)) != 0) {  // 记录库存变化
+                        printf("\n错误：无法将改动写入销售记录文件。\n");
+                    }
+                } else mid->col.sale_vol = result->col.sale_vol;
                 replace(result, mid);  // 向链表写入信息
                 dataSave(head);
                 printf("\n保存到文件...\n");
