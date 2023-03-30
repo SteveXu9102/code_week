@@ -8,4 +8,4 @@ BE AWARE: This repo is licensed under the MIT License.
 
 仅供参考，不保证程序功能的完整性和整体结构的合理性。
 
-FOR REFERENCE ONLY. The integrity of all functions and the rationality of the overall structure is not guaranteed.
+FOR REFERENCE ONLY. The integrity of all functions and the rationality of the overall structure are not guaranteed.
