@@ -373,7 +373,6 @@ unit *menu(unit *head) {  // 菜单及链功能实现，参数为表首地址
 
         case 8:
             printf("保存并退出中...\n");
-            dataSave(head);     // 保存数据并对上次数据进行备份
             break;
 
         default:  // 防止误输入序号

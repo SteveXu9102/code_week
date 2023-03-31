@@ -22,7 +22,7 @@ int fileRead(unit *head) {     // 读取存档并加载进链表，返回值表示读取状态
         fclose(fp);
         strcpy(head->col.name, "NULL");  // 无数据，用字符串"NULL"标记空链表头
         head->next = NULL;
-        return -1;  // 错误返回1
+        return -1;  // 错误返回-1
     } else rewind(fp);  // 检查完毕初始化文件指针
 
     while (!feof(fp)) {  // 检查指针是否在文件尾
@@ -133,6 +133,7 @@ int csvSingGen(char *n0) {  // 创建单项报表
             strcat(filename, ".csv");
             fclose(fp); // 关闭存档文件
             fp2 = fopen(filename, "w+"); // 建立报表
+            fprintf(fp2, "药品名,单次销售量,单价,总价,变更后销量,变更后库存量,时间日期\n");
             fp = fopen("stats.sav", "r+"); // 重新打开存档文件
             while (!feof(fp)) { // 按（时间）先后顺序读取所有项
                 fscanf(fp, "%s\t%d\t%lf\t%lf\t%ld\t%ld\t%s %s\n", cur->name, &cur->num, &cur->unit_price, &cur->total,
